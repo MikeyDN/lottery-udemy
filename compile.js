@@ -7,11 +7,13 @@ const source = fs.readFileSync(contractPath, 'utf8');
 
 const input = {
 	language: 'Solidity',
-	sources: { 'lottery.sol': { content: source, } },
+	sources: { 'lottery.sol': { content: source } },
 	settings: {
 		outputSelection: { '*': { '*': ['*'] } }
 	}
 };
-module.exports = JSON.parse(
+retval = JSON.parse(
 	solc.compile(JSON.stringify(input))
 ).contracts['lottery.sol'].Lottery;
+console.log(retval.abi);
+module.exports = retval;

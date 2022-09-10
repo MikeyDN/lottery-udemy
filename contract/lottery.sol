@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 
 contract Lottery {
     address public manager;
-    address[] public participants;
+    address payable[] public participants;
 
     constructor() {
         manager = msg.sender;
@@ -13,7 +13,7 @@ contract Lottery {
     function enter() public payable {
         require(msg.value > .01 ether);
 
-        participants.push(msg.sender);
+        participants.push(payable(msg.sender));
     }
 
     modifier onlyOwner() {
@@ -23,11 +23,11 @@ contract Lottery {
 
     function pickWinner() public onlyOwner {
         uint winner = random() % participants.length;
-        payable(participants[winner]).transfer(address(this).balance);
-        participants = new address[](0);
+        participants[winner].transfer(address(this).balance);
+        participants = new address payable[](0);
     }
 
-    function getPlayers() public view returns (address[] memory) {
+    function getPlayers() public view returns (address payable[] memory) {
         return participants;
     }
 
