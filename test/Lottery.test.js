@@ -17,12 +17,63 @@ beforeEach(async () => {
 			data: evm.bytecode.object
 		})
 		.send({ from: accounts[0], gas:'1000000' });
-		console.log(lottery);
 });
 
-describe('Lottery', () => {
+describe('Lottery', async () => {
 	it('deploys contract', () => {
 		assert.ok(lottery.options.address);
+	});
+
+	it('records first entry', async () => {
+		await lottery.methods.enter().send({
+			from: accounts[0],
+			value: web3.utils.toWei("0.02", "ether")
+		});
+
+		const players = await lottery.methods.getPlayers().call({
+			from: accounts[0]
+		});
+
+		assert.equal(accounts[0], players[0]);
+		assert.equal(1, players.length);
+	});
+
+	it('records multiple entries', async () => {
+		await lottery.methods.enter().send({
+			from: accounts[0],
+			value: web3.utils.toWei("0.02", "ether")
+		});
+
+		await lottery.methods.enter().send({
+			from: accounts[1],
+			value: web3.utils.toWei("0.03", "ether")
+		});
+
+		await lottery.methods.enter().send({
+			from: accounts[2],
+			value: web3.utils.toWei("0.04", "ether")
+		});
+
+		const players = await lottery.methods.getPlayers().call({
+			from: accounts[0]
+		});
+
+		assert.equal(accounts[0], players[0]);
+		assert.equal(accounts[1], players[1]);
+		assert.equal(accounts[2], players[2]);
+		assert.equal(3, players.length);
+	});
+
+	it('limits minimum entry value', async () => {
+		try {
+			await lottery.methods.enter().send({
+				from: accounts[0],
+				value: 200
+			});
+
+		} catch (err) {
+			assert(err);
+		}
 	});
 
 });
