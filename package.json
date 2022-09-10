@@ -1,4 +1,12 @@
 {
+  "name": "lottery",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts":{
+    "test": "mocha"
+  },
+  "author": "MikeyDN24",
+  "license": "UNLICENSED",
   "dependencies": {
     "ganache-cli": "^6.12.2",
     "mocha": "^10.0.0",
