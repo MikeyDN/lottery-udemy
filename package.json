@@ -2,12 +2,13 @@
   "name": "lottery",
   "version": "0.0.1",
   "main": "index.js",
-  "scripts":{
+  "scripts": {
     "test": "mocha"
   },
   "author": "MikeyDN24",
   "license": "UNLICENSED",
   "dependencies": {
+    "@truffle/hdwallet-provider": "^2.0.14",
     "ganache-cli": "^6.12.2",
     "mocha": "^10.0.0",
     "solc": "^0.8.17",
